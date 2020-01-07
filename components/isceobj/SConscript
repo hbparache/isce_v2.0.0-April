@@ -1,0 +1,65 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# copyright: 2014 to the present, california institute of technology.
+# all rights reserved. united states government sponsorship acknowledged.
+# any commercial use must be negotiated with the office of technology transfer
+# at the california institute of technology.
+# 
+# this software may be subject to u.s. export control laws. by accepting this
+# software, the user agrees to comply with all applicable u.s. export laws and
+# regulations. user has the responsibility to obtain export licenses,  or other
+# export authority as may be required before exporting such information to
+# foreign countries or providing access to foreign persons.
+# 
+# installation and use of this software is restricted by a license agreement
+# between the licensee and the california institute of technology. it is the
+# user's responsibility to abide by the terms of the license agreement.
+#
+# Author: Giangi Sacco
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+import os
+import sys
+Import('envcomponents')
+package = 'components/isceobj'
+envisceobj = envcomponents.Clone()
+envisceobj['PACKAGE'] = package
+install = envisceobj['PRJ_SCONS_INSTALL'] + '/' + package
+initFile = '__init__.py'
+if not os.path.exists(initFile):
+        fout = open(initFile,"w")
+        fout.write("#!/usr/bin/env python")
+        fout.close()
+
+listFiles = [initFile]
+envisceobj.Install(install,listFiles)
+envisceobj.Alias('install',install)
+Export('envisceobj')
+SConscript('LineAccessor/SConscript')
+SConscript('Image/SConscript')
+SConscript('Platform/SConscript')
+SConscript('Radar/SConscript')
+SConscript('Constants/SConscript')
+SConscript('XmlUtil/SConscript')
+SConscript('Sensor/SConscript')
+SConscript('Orbit/SConscript')
+SConscript('Attitude/SConscript')
+SConscript('Scene/SConscript')
+SConscript('Planet/SConscript')
+SConscript('Renderer/SConscript')
+SConscript('Doppler/SConscript')
+SConscript('Location/SConscript')
+SConscript('Image/SConscript')
+SConscript('Filter/SConscript')
+SConscript('ImageFilter/SConscript')
+SConscript('Catalog/SConscript')
+SConscript('Pause/SConscript')
+SConscript('InsarProc/SConscript')
+SConscript('Util/SConscript')
+SConscript('Unwrap/SConscript')
+SConscript('IsceProc/SConscript') ##KK, ML 2013-07-24: processors for isceApp.py
+SConscript('Stack/SConscript') ##KK, ML 2013-07-24: get all selected scenes from xml
+SConscript('Registry/SConscript')
+SConscript('RoiProc/SConscript')
+SConscript('TopsProc/SConscript')
+SConscript('RtcProc/SConscript')

@@ -1,0 +1,106 @@
+20170403: isce-2.0.0_201704: revision 225
+
+General bug fixes.  Highlights:
+  -- Fixed typo bug in TopsProc/runVerifyDEM for the case that a dem exists
+but the corresponding 'vrt' file does not exist.  This bug would only
+occur if there were a dem that had been created without a vrt file.
+  -- Fixed bug in Orbit.py  handling of combination of orbits
+  -- Fixed bug in topo to correctly handle right-looking geometry
+  -- Fixed C++ code (many .cpp and .h files) to eliminate many of the large number of warnings during compilation.
+
+New capabilities:
+=================
+  -- Added 2 stage unwrapping to topsApp
+  -- GDAL integration in ISCE ImageAPI allows reading of any GDAL supported format.
+  -- Added option to extract data directly from Sentinel1 tiff images to save disk space.
+  -- Added virtual stitching of Sentinel1 swaths and frames to save disk space
+  -- Restored shadow/layover mask computation with elevation angles
+  -- Set default Tops posting to 90m to to make phase unwrapping tractable
+  -- Enabled Ampcor and Offsets to work with virtual mosaics.
+  -- Enabled sub-millisecond estimation of starting time of ALOS frames to fix bugs in frame stitching.
+  -- Added geocoding for pixel offsets, dense offsets SNR image
+  -- Added support for Terrain Corrected Products capabilities and initial development of an App for it.
+
+=============================================================================
+Reminder of previous new capabilities and bug fixes:
+1. topsApp related
+    a. Can provide zip files / safe folders as inputs
+    b. Bug fixes to support multi slice / region of interest processing
+    c. Generation of traditional coherence products
+    d. Output file names match insarApp – single resolution merged products
+       have .full suffix
+    e. Looks, filter strength, thresholds etc moved from topsproc level to
+       topsapp level
+    f. Changes to topsApp to use new Image API decorators
+    g. Added support for Sentinel-1B
+2. topsOffsetApp
+    a. To be run in same folder as topsApp.
+    b. Produces dense pixel offset maps from Sentinel data.
+3. Stripmap processing related
+    a. Stripped ALOS raw data of headers
+    b. Fixed bug in stripmap frame stitcher when starting ranges were different
+4. General changes
+    a. Bug fixes to support near-nadir imaging geometries like SWOT
+    b. Geocoding support for datatypes other than FLOAT / CFLOAT
+    c. Updates to envisat reader to handle new ESA format
+    d. Bug fix in water mask generation when input DEM doesn’t span the image.
+    e. Bug fix in DemStitchers to enable dem.py to work again.
+
+===============================================================================
+Previous note about compiling ISCE after unsuccessful build due to missing headers and libraries:
+
+When building ISCE, scons will check the list of header files and libraries that
+ISCE requires.  Scons will cache the results of this dependency checking.  So,
+if you try to build ISCE and scons tells you that you are missing headers or
+libraries, then you should remove the cached files before trying to build ISCE
+again after installing the missing headers and libraries.  The cached files are
+config.log, .sconfig.dblite, and the files in directory .sconf_temp.  You should
+run the following command while in the top directory of the ISCE source (the
+directory containing the SConstruct file):
+
+> rm -rf config.log .sconfig.dblite .sconf_temp
+
+and then try "scons install" again.
+
+===============================================================================
+From past notes about automatic downloading of dems:
+
+1. You need to have a user name and password from urs.earthdata.nasa.gov and you
+need to include LPDAAC applications to your account.
+    a. If you don't already have an earthdata username and password,
+       you can set them at https://urs.earthdata.nasa.gov/
+    b. If you already have an earthdata account, please ensure that
+       you add LPDAAC applications to your account:
+         - Login to earthdata here: https://urs.earthdata.nasa.gov/home
+         - Click on my applications on the profile
+         - Click on “Add More Applications”
+         - Search for “LP DAAC”
+         - Select “LP DAAC Data Pool” and “LP DAAC OpenDAP” and approve.
+
+2. create a file named .netrc with the following 3 lines:
+
+machine urs.earthdata.nasa.gov
+    login your_earthdata_login_name
+    password your_earthdata_password
+
+
+3. set permissions to prevent others from viewing your credentials:
+
+> chmod go-rwx .netrc
+
+===============================================================================
+From past note on making stitched dems and water masks globally available:
+
+Stitched dems and water body masks will be stored in and used from a directory
+indicated by the environment variable, $DEMDB.  If you define this environment
+variable with value equal to a path where you want to store stitched dems and
+waterbody masks, then any stitched dem or water mask will be globally available
+automatically without needing to specify any information about the dem in your
+input files for ISCE processing applications. If you use dem.py or watermask.py,
+the stitched products are left in the directory where you run these apps.  If
+you want them to be globally available, then either run dem.py or watermask.py
+in the $DEMDB directory or else move them there.
+
+===================
+End-Of-Release-Note
+===================

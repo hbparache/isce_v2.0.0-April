@@ -1,0 +1,38 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# copyright: 2012 to the present, california institute of technology.
+# all rights reserved. united states government sponsorship acknowledged.
+# any commercial use must be negotiated with the office of technology transfer
+# at the california institute of technology.
+# 
+# this software may be subject to u.s. export control laws. by accepting this
+# software, the user agrees to comply with all applicable u.s. export laws and
+# regulations. user has the responsibility to obtain export licenses,  or other
+# export authority as may be required before exporting such information to
+# foreign countries or providing access to foreign persons.
+# 
+# installation and use of this software is restricted by a license agreement
+# between the licensee and the california institute of technology. it is the
+# user's responsibility to abide by the terms of the license agreement.
+#
+# Author: Giangi Sacco
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+import os
+
+Import('envmocompTSX')
+package = envmocompTSX['PACKAGE']
+project = envmocompTSX['PROJECT']
+install = envmocompTSX['PRJ_SCONS_INSTALL'] + '/' + package + '/' + project
+build = envmocompTSX['PRJ_SCONS_BUILD'] + '/' + package + '/' + project
+libList = ['gomp',  'mocompTSX', 'formslcLib', 'utilLib', 'combinedLib',
+           'DataAccessor', 'InterleavedAccessor', 'StdOEL']
+envmocompTSX.PrependUnique(LIBS = libList)
+module = envmocompTSX.LoadableModule(target = 'mocompTSX.abi3.so',
+                                     source = 'mocompTSXmodule.cpp')
+envmocompTSX.Install(install,module)
+envmocompTSX.Alias('install',install)
+envmocompTSX.Install(build,module)
+envmocompTSX.Alias('build',build)

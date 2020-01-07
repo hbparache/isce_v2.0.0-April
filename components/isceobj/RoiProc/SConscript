@@ -1,0 +1,53 @@
+#! /usr/bin/env python
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# copyright: 2012 to the present, california institute of technology.
+# all rights reserved. united states government sponsorship acknowledged.
+# any commercial use must be negotiated with the office of technology transfer
+# at the california institute of technology.
+# 
+# this software may be subject to u.s. export control laws. by accepting this
+# software, the user agrees to comply with all applicable u.s. export laws and
+# regulations. user has the responsibility to obtain export licenses,  or other
+# export authority as may be required before exporting such information to
+# foreign countries or providing access to foreign persons.
+# 
+# installation and use of this software is restricted by a license agreement
+# between the licensee and the california institute of technology. it is the
+# user's responsibility to abide by the terms of the license agreement.
+#
+# Author: Eric Gurrola
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+#!/usr/bin/env python
+import os
+
+Import('envisceobj')
+package = envisceobj['PACKAGE']
+project = 'RoiProc'
+
+install = os.path.join(envisceobj['PRJ_SCONS_INSTALL'],package,project)
+
+listFiles = ['__init__.py', 'Factories.py', 'RoiProc.py', '__RoiProc.py',
+    'runCoherence.py', 'runFilter.py',
+    'runFormSLCisce.py', 'runGeocode.py', 'runGeo2rdr.py',
+    'runGrass.py', 'runOffoutliers.py',
+    'runPrepareResamps.py', 'runPreprocessor.py',
+    'runResamp_only.py',
+    'runResamp.py', 'runOffsetprf.py', 'runOffsetprf_none.py',
+    'runOffsetprf_ampcor.py','runOffsetprf_nstage.py', 'runRgoffset.py',
+    'runShadecpx2rg.py', 'runROI.py',
+    'runTopo.py', 'runCorrect.py', 'extractInfo.py',
+    'createDem.py','runUnwrapGrass.py','runUnwrapSnaphu.py', 'runUnwrapIcu.py',
+    'runRgoffset_ampcor.py','runRgoffset_nstage.py', 'runRgoffset_none.py'
+]
+helpList,installHelp = envisceobj['HELP_BUILDER'](envisceobj,'__init__.py',install)
+envisceobj.Install(installHelp,helpList)
+envisceobj.Alias('install',installHelp)
+
+envisceobj.Install(install,listFiles)
+envisceobj.Alias('install',install)

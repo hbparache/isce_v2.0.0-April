@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# copyright: 2010 to the present, california institute of technology.
+# all rights reserved. united states government sponsorship acknowledged.
+# any commercial use must be negotiated with the office of technology transfer
+# at the california institute of technology.
+# 
+# this software may be subject to u.s. export control laws. by accepting this
+# software, the user agrees to comply with all applicable u.s. export laws and
+# regulations. user has the responsibility to obtain export licenses,  or other
+# export authority as may be required before exporting such information to
+# foreign countries or providing access to foreign persons.
+# 
+# installation and use of this software is restricted by a license agreement
+# between the licensee and the california institute of technology. it is the
+# user's responsibility to abide by the terms of the license agreement.
+#
+# Author: Giangi Sacco
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+import os
+import sys
+
+Import('env')
+envapplications = env.Clone()
+package = 'applications'
+envapplications['PACKAGE'] = package
+envapplications['INSTALL_PATH'] = os.path.join(
+    envapplications['PRJ_SCONS_INSTALL'], package
+    )
+Export('envapplications')
+
+install = envapplications['INSTALL_PATH']
+helpList,installHelp = envapplications['HELP_BUILDER'](envapplications,'__init__.py',install)
+envapplications.Install(installHelp,helpList)
+envapplications.Alias('install',installHelp)
+
+listFiles = ['mdx.py',
+#	     'PrepareStack.py',
+             'insarApp.py',
+             'roiApp.py',
+             'topsApp.py',
+             'topsOffsetApp.py',
+#             'xmlGenerator.py',
+#             'dpmApp.py',
+#	         'CalculatePegPoint.py',
+#             'calculateBaseline.py',
+#             'extractHDROrbit.py',
+#             'formSLC.py',
+#             'viewMetadata.py',
+             'make_raw.py',
+             '__init__.py',
+             'isceApp.py',
+             'stitcher.py',
+             'dem.py',
+             'wbdStitcher.py',
+             'upsampleDem.py',
+             'iscehelp.py',
+             'imageMath.py',
+             'waterMask.py',
+             'looks.py',
+             'isce2gis.py',
+             'fixImageXml.py',
+             'isce2geotiff.py',
+             'dataTileManager.py']
+#             'isce2he5.py']
+
+envapplications.Install(install, listFiles)
+envapplications.Alias('install', install)
